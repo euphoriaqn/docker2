@@ -1,0 +1,35 @@
+plugins {
+    id 'com.bmuschko.docker-remote-api' version '4.1.0'
+    id 'org.springframework.boot' version '2.1.4.RELEASE'
+}
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'com.bmuschko.docker-remote-api'
+
+import com.bmuschko.gradle.docker.tasks.image.*
+
+jar {
+    baseName = 'spring-boot-docker'
+    version =  '1.0'
+}
+
+task buildImage(type: DockerBuildImage) {
+    dockerFile = project.file('Dockerfile')
+    inputDir = projectDir
+    tag = '1.0'
+}
+
+repositories {
+    jcenter()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    implementation(platform("org.springframework.boot:spring-boot-dependencies:2.1.1.RELEASE"))
+    compile("org.springframework.boot:spring-boot-starter-web") 
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+}
+
